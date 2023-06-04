@@ -1,20 +1,26 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import {ref} from "vue";
+
+const title = ref<string>('Title');
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
+    {{ title }}
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+      <HelloWorld
+          msg="Message"
+          v-model="title"
+          :grouped="{
+            grouped: ['Laravel', 'Jutsu'],
+          }"
+          v-slot="slotProps"
+      >
+        SLOT PART {{ slotProps.message }}
+      </HelloWorld>
     </div>
   </header>
-
-  <main>
-    <TheWelcome />
-  </main>
 </template>
 
 <style scoped>

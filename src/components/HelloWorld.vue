@@ -1,17 +1,39 @@
-<script setup lang="ts">
-defineProps<{
-  msg: string
-}>()
+<script setup lang="ts" generic="T">
+import {defineModel, watchEffect} from "vue";
+import type {GroupedType} from "@/GroupedType";
+
+defineSlots<{
+  default?: (props: { message: string }) => any
+}>();
+
+const { msg = 'Default Message' } = defineProps<{
+  msg: string,
+  grouped: GroupedType<T>
+}>();
+
+const modelValue = defineModel({ default: 'Super Title'});
+
+watchEffect(() => {
+  console.log(msg);
+});
 </script>
 
 <template>
+  <slot
+    :message="msg"
+  />
+
+  <template
+    v-for="groupedItem in grouped.grouped"
+  >
+    <h1
+      v-text="groupedItem"
+    />
+  </template>
+
   <div class="greetings">
     <h1 class="green">{{ msg }}</h1>
-    <h3>
-      You’ve successfully created a project with
-      <a href="https://vitejs.dev/" target="_blank" rel="noopener">Vite</a> +
-      <a href="https://vuejs.org/" target="_blank" rel="noopener">Vue 3</a>.
-    </h3>
+    <input type="text" v-model="modelValue">
   </div>
 </template>
 
